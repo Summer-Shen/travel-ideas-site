@@ -4,19 +4,19 @@ from ti.models import User, Idea, Tag, Comment
 
 
 class UserAdmin(admin.ModelAdmin):
-    list_display = ("name", "email", "created_at")
+    list_display = ("id", "name", "email", "created_at")
 
 
 class IdeaAdmin(admin.ModelAdmin):
-    list_display = ("user_id", "title", "destination", "start_date", "end_date", "created_at", "modified_at")
+    list_display = ("id", "user_id", "title", "destination", "start_date", "end_date", "created_at", "modified_at")
 
 
 class TagAdmin(admin.ModelAdmin):
-    list_display = ("idea_id", "name")
+    list_display = ("id", "idea_id", "name")
 
 
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ("idea_id", "user_id", "content", "created_at")
+    list_display = ("id", "idea_id", "user_id", "content", "created_at")
 
 
 # Register your models here.
