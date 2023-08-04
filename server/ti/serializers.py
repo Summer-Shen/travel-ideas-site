@@ -9,6 +9,12 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ["name", "email"]
 
 
+class IdeaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Idea
+        fields = ["id", "title", "destination", "start_date", "end_date"]
+
+
 class IdeaSearchItemSerializer(serializers.ModelSerializer):
     comments_count = serializers.IntegerField(read_only=True)
     
