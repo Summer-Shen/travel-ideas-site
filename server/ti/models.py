@@ -26,7 +26,7 @@ class Idea(models.Model):
 
 
 class Tag(models.Model):
-    idea_id = models.ForeignKey(Idea, on_delete=models.CASCADE)
+    idea_id = models.ForeignKey(Idea, related_name="tags", on_delete=models.CASCADE)
     name = models.CharField(max_length=64)
     
     def __str__(self):
