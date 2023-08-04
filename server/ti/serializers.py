@@ -1,6 +1,12 @@
 from rest_framework import serializers
 
-from .models import Idea
+from .models import Idea, User
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["name", "email"]
 
 
 class IdeaSearchItemSerializer(serializers.ModelSerializer):

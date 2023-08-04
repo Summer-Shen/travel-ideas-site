@@ -25,6 +25,8 @@ router = routers.DefaultRouter()
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include(router.urls)),
+    path("api/users/register", views.register),
+    path("api/users/login", views.login),
     path("api/ideas/search_dest", views.search_ideas_by_destination),
     path("api/ideas/search_tag", views.search_ideas_by_tag),
 ]
