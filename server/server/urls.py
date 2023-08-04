@@ -20,9 +20,10 @@ from rest_framework import routers
 from ti import views
 
 router = routers.DefaultRouter()
-router.register(r"ideas", views.IdeaView, "ti")
+# router.register(r"ideas", views.IdeaViewSet, "idea")
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include(router.urls)),
+    path("api/ideas/search", views.search_ideas),
 ]
