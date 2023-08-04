@@ -87,6 +87,20 @@ def create_idea(request):
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+@api_view(["POST"])
+def delete_idea(request):
+    idea_id = request.POST["idea_id"]
+    try:
+        idea = Idea.objects.get(id__exact=idea_id)
+    except Idea.DoesNotExist:
+        return Response(
+            "Please input valid idea id.",
+            status=status.HTTP_400_BAD_REQUEST
+        )
+    idea.delete()
+    return Response("Idea deleted.", status=status.HTTP_200_OK)
+
+
 @api_view(["GET"])
 def search_ideas_by_destination(request):
     query = request.GET.get("q", "")

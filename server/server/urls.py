@@ -27,6 +27,7 @@ urlpatterns = [
     path("api/users/register", views.register),
     path("api/users/login", views.login),
     path("api/ideas/create", views.create_idea),
+    path("api/ideas/delete", views.delete_idea),
     path("api/ideas/search_dest", views.search_ideas_by_destination),
     path("api/ideas/search_tag", views.search_ideas_by_tag),
 ]
