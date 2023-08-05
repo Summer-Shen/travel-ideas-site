@@ -4,12 +4,13 @@ from django.contrib.auth.hashers import make_password, check_password
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.db.models import Count
+from django.utils.html import escape
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from .models import Idea, User, Tag
-from .serializers import IdeaSearchItemSerializer, UserSerializer, IdeaSerializer
+from .models import Idea, User, Tag, Comment
+from .serializers import IdeaSearchItemSerializer, UserSerializer, IdeaSerializer, CommentSerializer
 
 
 # Create your views here.
@@ -156,4 +157,45 @@ def search_ideas_by_tag(request):
     matched_ideas = Idea.objects.filter(tags__name=query)
     matched_ideas = matched_ideas.annotate(comments_count=Count("comments"))
     serializer = IdeaSearchItemSerializer(matched_ideas, many=True)
+    return Response(serializer.data)
+
+
+@api_view(["POST"])
+def create_comment(request):
+    idea_id = request.POST.get("idea_id")
+    try:
+        idea = Idea.objects.get(id__exact=idea_id)
+    except Idea.DoesNotExist:
+        return Response(
+            "Please input valid idea id.",
+            status=status.HTTP_400_BAD_REQUEST
+        )
+    user_id = request.POST.get("user_id")
+    try:
+        user = User.objects.get(id__exact=user_id)
+    except User.DoesNotExist:
+        return Response(
+            "Please input valid user id.",
+            status=status.HTTP_400_BAD_REQUEST
+        )
+    content = request.POST.get("content")
+    # escape content of the comment
+    content = escape(content)
+    # data validation
+    if len(content) > 255:
+        return Response(
+            "The maximum length of a comment is 255 characters.",
+            status=status.HTTP_400_BAD_REQUEST
+        )
+    comment = Comment(idea_id=idea, user_id=user, content=content)
+    comment.save()
+    serializer = CommentSerializer(comment, many=False)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(["GET"])
+def get_comments_by_idea(request):
+    query = request.GET.get("q", "")
+    matched_comments = Comment.objects.filter(idea_id=query)
+    serializer = CommentSerializer(matched_comments, many=True)
     return Response(serializer.data)
