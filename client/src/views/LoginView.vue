@@ -25,11 +25,11 @@
         @submit="onSubmit"
       >
         <t-form-item label="Email" name="email">
-          <t-input v-model="formData.email" placeholder="" @enter="onEnter"></t-input>
+          <t-input v-model="formData.email" @enter="onEnter"></t-input>
         </t-form-item>
 
         <t-form-item label="Password" name="password">
-          <t-input v-model="formData.password" placeholder="" @enter="onEnter"></t-input>
+          <t-input v-model="formData.password" type="password" @enter="onEnter"></t-input>
         </t-form-item>
 
         <t-form-item>
