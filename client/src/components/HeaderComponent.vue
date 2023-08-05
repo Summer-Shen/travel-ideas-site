@@ -29,8 +29,6 @@ import { MessagePlugin } from 'tdesign-vue-next'
 import { getCurrentInstance } from 'vue'
 import { useUserStore } from '@/stores/user'
 
-import { BulletpointIcon, DeleteIcon, EditIcon, ChatIcon } from 'tdesign-icons-vue-next'
-
 const { proxy } = getCurrentInstance()
 
 // const isLoggedIn = ref(false)
@@ -61,6 +59,7 @@ const handleRegister = () => {
 
 const handleLogout = () => {
   userStore.clearUser()
+  MessagePlugin.info('Logout successful')
   proxy.$router.push({
     path: '/login'
   })
