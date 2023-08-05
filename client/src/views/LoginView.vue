@@ -1,18 +1,10 @@
 <template>
   <div>
     <t-space direction="vertical">
-      <login-header />
-
       <div>
         <div>
           <h1>Login to</h1>
           <h1>Travel Ideas</h1>
-          <!-- <div class="sub-title">
-          <p class="tip">{{ type == 'register' ? '已有账号?' : '没有账号吗?' }}</p>
-          <p class="tip" @click="switchType(type == 'register' ? 'login' : 'register')">
-            {{ type == 'register' ? '登录' : '注册新账号' }}
-          </p>
-        </div> -->
         </div>
       </div>
       <t-form
@@ -25,11 +17,16 @@
         @submit="onSubmit"
       >
         <t-form-item label="Email" name="email">
-          <t-input v-model="formData.email" @enter="onEnter"></t-input>
+          <t-input v-model="formData.email" placeholder="" @enter="onEnter"></t-input>
         </t-form-item>
 
         <t-form-item label="Password" name="password">
-          <t-input v-model="formData.password" type="password" @enter="onEnter"></t-input>
+          <t-input
+            v-model="formData.password"
+            type="password"
+            placeholder=""
+            @enter="onEnter"
+          ></t-input>
         </t-form-item>
 
         <t-form-item>
@@ -39,6 +36,9 @@
           </t-space>
         </t-form-item>
       </t-form>
+
+      <div>New here? <RouterLink to="/register">Create an account</RouterLink></div>
+
       <footer class="copyright">Copyright @ 2022-2023 Travel Ideas. All Rights Reserved</footer>
     </t-space>
   </div>
