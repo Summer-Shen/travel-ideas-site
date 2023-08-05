@@ -47,8 +47,11 @@
 import { ref, reactive } from 'vue'
 import { MessagePlugin } from 'tdesign-vue-next'
 import { getCurrentInstance } from 'vue'
+import { useUserStore } from '@/stores/user'
 
 const { proxy } = getCurrentInstance()
+
+const userStore = useUserStore()
 
 const FORM_RULES = {
   email: [
@@ -79,7 +82,8 @@ const onSubmit = ({ validateResult, firstError }) => {
       })
       .then(function (response) {
         console.log(response)
-        MessagePlugin.success('Welcome, ' + response.data.name)
+        userStore.setUser(response.data)
+        MessagePlugin.success('Welcome, ' + userStore.name)
       })
       .catch(function (error) {
         console.log(error)
