@@ -21,7 +21,7 @@ export const useUserStore = defineStore('user', () => {
 
   // clear user info in store and in Cookies
   function clearUser() {
-    id.value = ''
+    id.value = 0
     Cookies.remove('user_id')
     name.value = ''
     Cookies.remove('user_name')
