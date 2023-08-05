@@ -35,7 +35,13 @@ def register(request):
 def login(request):
     email = request.POST.get("email")
     password = request.POST.get("password")
-    user = User.objects.get(email__exact=email)
+    try:
+        user = User.objects.get(email__exact=email)
+    except User.DoesNotExist:
+        return Response(
+            "Incorrect email, please try again.",
+            status=status.HTTP_400_BAD_REQUEST
+        )
     encoded = user.password
     if check_password(password, encoded):
         serializer = UserSerializer(user, many=False)

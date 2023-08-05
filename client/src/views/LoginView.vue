@@ -1,12 +1,12 @@
 <template>
-  <div class="login-wrapper">
+  <div>
     <t-space direction="vertical">
       <login-header />
 
-      <div class="login-container">
-        <div class="title-container">
-          <h1 class="title margin-no">Login to</h1>
-          <h1 class="title">Travel Ideas</h1>
+      <div>
+        <div>
+          <h1>Login to</h1>
+          <h1>Travel Ideas</h1>
           <!-- <div class="sub-title">
           <p class="tip">{{ type == 'register' ? '已有账号?' : '没有账号吗?' }}</p>
           <p class="tip" @click="switchType(type == 'register' ? 'login' : 'register')">
@@ -78,12 +78,12 @@ const onSubmit = ({ validateResult, firstError }) => {
         headers: { 'Content-Type': 'multipart/form-data' }
       })
       .then(function (response) {
-        // TODO
         console.log(response)
-        MessagePlugin.success('login successful')
+        MessagePlugin.success('Welcome, ' + response.data.name)
       })
       .catch(function (error) {
         console.log(error)
+        MessagePlugin.warning(error.response.data)
       })
       .finally(function () {
         // always executed
