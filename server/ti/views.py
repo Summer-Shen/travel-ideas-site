@@ -18,6 +18,12 @@ from .serializers import IdeaSearchItemSerializer, UserSerializer, IdeaSerialize
 @api_view(["POST"])
 def register(request):
     name = request.POST.get("name")
+    # data validation
+    if len(name) > 20:
+        return Response(
+            "The maximum length of the user name is 20 characters.",
+            status=status.HTTP_400_BAD_REQUEST
+        )
     email = request.POST.get("email")
     try:
         validate_email(email)
