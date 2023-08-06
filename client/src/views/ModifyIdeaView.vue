@@ -141,20 +141,8 @@ proxy
 const FORM_RULES = {
   title: [{ required: true, message: 'Title is required' }],
   destination: [{ required: true, message: 'Destination is required' }],
-  start_date: [
-    { required: true, message: 'Start date is required' }
-    // {
-    //   validator: (val) => val <= formData.end_date,
-    //   message: 'Start date should be earlier or the same as end date'
-    // }
-  ],
-  end_date: [
-    { required: true, message: 'End date is required' }
-    // {
-    //   validator: (val) => val >= formData.start_date,
-    //   message: 'End date should be later or the same as start date'
-    // }
-  ],
+  start_date: [{ required: true, message: 'Start date is required' }],
+  end_date: [{ required: true, message: 'End date is required' }],
   tags: [{ required: true, message: 'Tags are required' }]
 }
 
@@ -165,7 +153,6 @@ const onReset = () => {
 }
 
 const onSubmit = ({ validateResult, firstError }) => {
-  // console.log(formData)
   const stringifiedFormData = {}
   for (let key in formData) {
     if (Array.isArray(formData[key])) {

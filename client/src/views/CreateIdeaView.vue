@@ -124,7 +124,6 @@ const onReset = () => {
 }
 
 const onSubmit = ({ validateResult, firstError }) => {
-  // console.log(formData)
   const stringifiedFormData = {}
   for (let key in formData) {
     if (Array.isArray(formData[key])) {
