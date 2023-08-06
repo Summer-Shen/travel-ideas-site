@@ -2,7 +2,7 @@
   <div>
     <t-loading size="small" :loading="loading" show-overlay>
       <t-space direction="vertical" size="small">
-        <div>Weather: {{ weatherText }}, {{ metricTemperatureText }}</div>
+        <div v-if="!loading">Weather: {{ weatherText }}, {{ metricTemperatureText }}</div>
       </t-space>
     </t-loading>
   </div>
