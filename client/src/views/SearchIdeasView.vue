@@ -90,9 +90,22 @@ const userStore = useUserStore(pinia)
 
 const results = ref([])
 
-const FORM_RULES = {
-  keyword: [{ required: true, message: 'Please input search keyword' }]
-}
+proxy
+  .$http({
+    method: 'get',
+    url: 'api/ideas/search_by_dest?q='
+  })
+  .then(function (response) {
+    console.log(response)
+    results.value = response.data
+  })
+  .catch(function (error) {
+    console.log(error)
+    MessagePlugin.warning(error.response.data)
+  })
+  .finally(function () {
+    // always executed
+  })
 
 const formData = reactive({
   searchBy: 'destination',
