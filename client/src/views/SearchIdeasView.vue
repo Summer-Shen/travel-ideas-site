@@ -49,7 +49,9 @@
                       </t-button>
                     </div>
                     <div v-if="result.user_id === userStore.id">
-                      <t-button variant="text" shape="square"> <edit-icon /> </t-button>
+                      <t-button variant="text" shape="square" @click="handleEdit(result.id)">
+                        <edit-icon />
+                      </t-button>
                     </div>
                     <t-button variant="text" shape="square"> <bulletpoint-icon /> </t-button>
                     <t-badge
@@ -152,6 +154,12 @@ const handleDelete = (idea_id) => {
     .finally(function () {
       // always executed
     })
+}
+
+const handleEdit = (idea_id) => {
+  proxy.$router.push({
+    path: '/' + idea_id
+  })
 }
 
 // disables Input component & triggers submit event when Enter key is pressed.
