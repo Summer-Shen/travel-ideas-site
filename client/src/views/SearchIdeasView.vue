@@ -44,7 +44,9 @@
                 <t-col flex="auto" style="display: inline-flex; justify-content: right">
                   <t-space size="small">
                     <div v-if="result.user_id === userStore.id">
-                      <t-button variant="text" shape="square"> <delete-icon /> </t-button>
+                      <t-button variant="text" shape="square" @click="handleDelete(result.id)">
+                        <delete-icon />
+                      </t-button>
                     </div>
                     <div v-if="result.user_id === userStore.id">
                       <t-button variant="text" shape="square"> <edit-icon /> </t-button>
@@ -128,9 +130,28 @@ const onSubmit = ({ validateResult, firstError }) => {
   }
 }
 
-// eslint-disable-next-line no-unused-vars
-const resetForm = () => {
-  form.value.reset()
+const handleDelete = (idea_id) => {
+  const formData = new FormData()
+  formData.append('idea_id', idea_id)
+  proxy
+    .$http({
+      method: 'post',
+      url: 'api/ideas/delete',
+      data: formData,
+      headers: { 'Content-Type': 'multipart/form-data' }
+    })
+    .then(function (response) {
+      console.log(response)
+      results.value = results.value.filter((result) => result.id !== idea_id)
+      MessagePlugin.info('Idea deleted')
+    })
+    .catch(function (error) {
+      console.log(error)
+      MessagePlugin.warning(error.response.data)
+    })
+    .finally(function () {
+      // always executed
+    })
 }
 
 // disables Input component & triggers submit event when Enter key is pressed.
