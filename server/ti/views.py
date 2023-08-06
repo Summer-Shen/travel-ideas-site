@@ -1,3 +1,4 @@
+import json
 from datetime import datetime
 
 from django.contrib.auth.hashers import make_password, check_password
@@ -66,11 +67,11 @@ def create_idea(request):
             "Please input valid user id.",
             status=status.HTTP_400_BAD_REQUEST
         )
-    start_date_str = request.POST.get("start_date")
-    end_date_str = request.POST.get("end_date")
+    start_date = request.POST.get("start_date")
+    end_date = request.POST.get("end_date")
     try:
-        start_date = datetime.strptime(start_date_str, '%Y-%m-%d')
-        end_date = datetime.strptime(end_date_str, '%Y-%m-%d')
+        start_date = datetime.date(datetime.fromisoformat(start_date))
+        end_date = datetime.date(datetime.fromisoformat(end_date))
         if start_date > end_date:
             return Response(
                 "End date should be the same or after start date.",
@@ -81,19 +82,18 @@ def create_idea(request):
             "Please input valid dates.",
             status=status.HTTP_400_BAD_REQUEST
         )
-    # we pass tags as a string of tags with separators
-    tags = request.POST.get("tags").split(",")
+    # we pass tags as json
+    tags = json.loads(request.POST.get('tags'))
     idea = Idea(
         user_id=user,
         title=request.POST.get("title"),
         destination=request.POST.get("destination"),
-        start_date=start_date_str,
-        end_date=end_date_str
+        start_date=start_date,
+        end_date=end_date
     )
     idea.save()
-    for tag_str in tags:
-        tag = Tag(idea_id=idea, name=tag_str)
-        tag.save()
+    for tag in tags:
+        Tag(idea_id=idea, name=tag).save()
     serializer = IdeaSerializer(idea, many=False)
     return Response(serializer.data, status=status.HTTP_200_OK)
 

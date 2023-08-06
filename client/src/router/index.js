@@ -4,6 +4,7 @@ import { useUserStore } from '@/stores/user'
 import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import SearchIdeasView from '../views/SearchIdeasView.vue'
+import CreateIdeasView from '../views/CreateIdeaView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -27,6 +28,11 @@ const router = createRouter({
       path: '/search',
       name: 'search',
       component: SearchIdeasView
+    },
+    {
+      path: '/create',
+      name: 'create',
+      component: CreateIdeasView
     }
   ]
 })
