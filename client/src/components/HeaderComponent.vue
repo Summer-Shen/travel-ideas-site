@@ -2,8 +2,9 @@
   <header>
     <t-head-menu v-model="menuValue" theme="light" @change="changeHandler">
       <template #logo> Travel Ideas </template>
-      <t-menu-item value="item1"> Search </t-menu-item>
-      <t-menu-item value="item2" disabled> More to come... </t-menu-item>
+      <t-menu-item value="search"> Search </t-menu-item>
+      <t-menu-item value="create"> Create </t-menu-item>
+      <t-menu-item value="more" disabled> More to come... </t-menu-item>
       <template #operations>
         <div v-if="userStore.id === 0">
           <t-button variant="text" shape="square" @click="handleLogin">
@@ -35,12 +36,16 @@ const { proxy } = getCurrentInstance()
 // const isLoggedIn = ref(false)
 const userStore = useUserStore(pinia)
 
-const menuValue = ref('item1')
+const menuValue = ref('search')
 
 const changeHandler = (active) => {
-  if (active === 'item1') {
+  if (active === 'search') {
     proxy.$router.push({
       path: '/search'
+    })
+  } else if (active === 'create') {
+    proxy.$router.push({
+      path: '/create'
     })
   }
   console.log('change', active)
