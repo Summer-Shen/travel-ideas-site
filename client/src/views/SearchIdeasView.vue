@@ -36,7 +36,7 @@
 
       <div class="cards">
         <div v-for="result in results" :key="result.id" class="card">
-          <t-card :title="result.title" size="small" hoverShadow="true">
+          <t-card :title="result.title" size="small" hoverShadow>
             <div>Destination: {{ result.destination }}</div>
             <div>Date: {{ result.start_date }} to {{ result.end_date }}</div>
             <template #footer>
@@ -53,7 +53,13 @@
                         <edit-icon />
                       </t-button>
                     </div>
-                    <t-button variant="text" shape="square"> <bulletpoint-icon /> </t-button>
+                    <t-button
+                      variant="text"
+                      shape="square"
+                      @click="showDetails(result.id, result.destination)"
+                    >
+                      <bulletpoint-icon />
+                    </t-button>
                     <t-badge
                       :count="result.comments_count"
                       show-zero
@@ -74,6 +80,24 @@
       <footer class="copyright">Copyright @ 2022-2023 Travel Ideas. All Rights Reserved</footer>
     </t-space>
   </div>
+
+  <t-dialog
+    v-model:visible="isDetailsVisible"
+    attach="body"
+    :header="'Details: ' + currIdeaDestination"
+    destroy-on-close
+    :on-confirm="
+      () => {
+        isDetailsVisible = false
+        currIdeaId = 0
+        currIdeaDestination = ''
+      }
+    "
+  >
+    <template #body>
+      <details-component :id="currIdeaId" :destination="currIdeaDestination"></details-component>
+    </template>
+  </t-dialog>
 </template>
 <script setup>
 import { ref, reactive } from 'vue'
@@ -83,12 +107,16 @@ import pinia from '@/stores/index'
 import { useUserStore } from '@/stores/user'
 
 import { BulletpointIcon, DeleteIcon, EditIcon, ChatIcon } from 'tdesign-icons-vue-next'
+import DetailsComponent from '../components/DetailsComponent.vue'
 
 const { proxy } = getCurrentInstance()
 
 const userStore = useUserStore(pinia)
 
 const results = ref([])
+const isDetailsVisible = ref(false)
+const currIdeaId = ref(0)
+const currIdeaDestination = ref('')
 
 proxy
   .$http({
@@ -173,6 +201,12 @@ const handleEdit = (idea_id) => {
   proxy.$router.push({
     path: '/' + idea_id
   })
+}
+
+const showDetails = (idea_id, idea_destination) => {
+  currIdeaId.value = idea_id
+  currIdeaDestination.value = idea_destination
+  isDetailsVisible.value = true
 }
 
 // disables Input component & triggers submit event when Enter key is pressed.
