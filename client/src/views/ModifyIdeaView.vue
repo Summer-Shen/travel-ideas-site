@@ -66,6 +66,7 @@ import dayjs from 'dayjs'
 
 const { proxy } = getCurrentInstance()
 
+// eslint-disable-next-line no-unused-vars
 const userStore = useUserStore(pinia)
 
 const DATE_PICK_CONFIGS = {
@@ -88,31 +89,21 @@ const globalConfig = {
   datePicker: DATE_PICK_CONFIGS
 }
 
-// data validation rules
-const FORM_RULES = {
-  title: [{ required: true, message: 'Title is required' }],
-  destination: [{ required: true, message: 'Destination is required' }],
-  start_date: [
-    { required: true, message: 'Start date is required' },
-    {
-      validator: (val) => val <= formData.end_date,
-      message: 'Start date should be earlier or the same as end date'
-    }
-  ],
-  end_date: [
-    { required: true, message: 'End date is required' },
-    {
-      validator: (val) => val >= formData.start_date,
-      message: 'End date should be later or the same as start date'
-    }
-  ],
-  tags: [{ required: true, message: 'Tags are required' }]
-}
+const idea_id = proxy.$router.currentRoute.value.params.id
+
+const formData = reactive({
+  id: idea_id,
+  title: '',
+  destination: '',
+  start_date: dayjs().toDate(),
+  end_date: dayjs().toDate(),
+  tags: []
+})
 
 proxy
   .$http({
     method: 'get',
-    url: 'api/ideas/get?q=' + proxy.$router.currentRoute.value.params.id
+    url: 'api/ideas/get?q=' + idea_id
   })
   .then(function (response) {
     console.log(response)
@@ -132,7 +123,7 @@ proxy
 proxy
   .$http({
     method: 'get',
-    url: 'api/tags/get_by_idea?q=' + proxy.$router.currentRoute.value.params.id
+    url: 'api/tags/get_by_idea?q=' + idea_id
   })
   .then(function (response) {
     console.log(response)
@@ -146,14 +137,27 @@ proxy
     // always executed
   })
 
-const formData = reactive({
-  user_id: userStore.id,
-  title: '',
-  destination: '',
-  start_date: dayjs().toDate(),
-  end_date: dayjs().toDate(),
-  tags: []
-})
+// data validation rules
+const FORM_RULES = {
+  title: [{ required: true, message: 'Title is required' }],
+  destination: [{ required: true, message: 'Destination is required' }],
+  start_date: [
+    { required: true, message: 'Start date is required' }
+    // {
+    //   validator: (val) => val <= formData.end_date,
+    //   message: 'Start date should be earlier or the same as end date'
+    // }
+  ],
+  end_date: [
+    { required: true, message: 'End date is required' }
+    // {
+    //   validator: (val) => val >= formData.start_date,
+    //   message: 'End date should be later or the same as start date'
+    // }
+  ],
+  tags: [{ required: true, message: 'Tags are required' }]
+}
+
 const form = ref(null)
 
 const onReset = () => {
@@ -176,13 +180,13 @@ const onSubmit = ({ validateResult, firstError }) => {
     proxy
       .$http({
         method: 'post',
-        url: 'api/ideas/create',
+        url: 'api/ideas/modify',
         data: stringifiedFormData,
         headers: { 'Content-Type': 'multipart/form-data' }
       })
       .then(function (response) {
         console.log(response)
-        MessagePlugin.success('New idea "' + response.data.title + '" created.')
+        MessagePlugin.success('Idea "' + response.data.title + '" modified.')
         proxy.$router.push({
           path: '/search'
         })

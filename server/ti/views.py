@@ -122,11 +122,11 @@ def modify_idea(request):
             "Please input valid idea id.",
             status=status.HTTP_400_BAD_REQUEST
         )
-    start_date_str = request.POST.get("start_date")
-    end_date_str = request.POST.get("end_date")
+    start_date = request.POST.get("start_date")
+    end_date = request.POST.get("end_date")
     try:
-        start_date = datetime.strptime(start_date_str, '%Y-%m-%d')
-        end_date = datetime.strptime(end_date_str, '%Y-%m-%d')
+        start_date = datetime.date(datetime.fromisoformat(start_date))
+        end_date = datetime.date(datetime.fromisoformat(end_date))
         if start_date > end_date:
             return Response(
                 "End date should be the same or after start date.",
@@ -139,17 +139,16 @@ def modify_idea(request):
         )
     idea.title = request.POST.get("title")
     idea.destination = request.POST.get("destination")
-    idea.start_date = start_date_str
-    idea.end_date = end_date_str
+    idea.start_date = start_date
+    idea.end_date = end_date
     idea.save()
     
     # update tags by first deleting the existing ones
     Tag.objects.filter(idea_id__exact=idea).delete()
-    # we pass tags as a string of tags with separators
-    tags = request.POST.get("tags").split(",")
-    for tag_str in tags:
-        tag = Tag(idea_id=idea, name=tag_str)
-        tag.save()
+    # we pass tags as json
+    tags = json.loads(request.POST.get('tags'))
+    for tag in tags:
+        Tag(idea_id=idea, name=tag).save()
     serializer = IdeaSerializer(idea, many=False)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
