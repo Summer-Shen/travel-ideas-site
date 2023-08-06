@@ -11,7 +11,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from .models import Idea, User, Tag, Comment
-from .serializers import IdeaSearchItemSerializer, UserSerializer, IdeaSerializer, CommentSerializer
+from .serializers import IdeaSearchItemSerializer, UserSerializer, IdeaSerializer, CommentSerializer, TagSerializer
 
 
 # Create your views here.
@@ -165,6 +165,14 @@ def get_idea_by_id(request):
             status=status.HTTP_400_BAD_REQUEST
         )
     serializer = IdeaSerializer(idea, many=False)
+    return Response(serializer.data)
+
+
+@api_view(["GET"])
+def get_tags_by_idea(request):
+    query = request.GET.get("q", "")
+    tags = Tag.objects.filter(idea_id=query)
+    serializer = TagSerializer(tags, many=True)
     return Response(serializer.data)
 
 

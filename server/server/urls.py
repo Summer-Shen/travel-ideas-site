@@ -34,4 +34,5 @@ urlpatterns = [
     path("api/ideas/get", views.get_idea_by_id),
     path("api/comments/create", views.create_comment),
     path("api/comments/get_by_idea", views.get_comments_by_idea),
+    path("api/tags/get_by_idea", views.get_tags_by_idea)
 ]

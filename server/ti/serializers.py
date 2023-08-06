@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Idea, User, Comment
+from .models import Idea, User, Comment, Tag
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -27,3 +27,9 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ["id", "idea_id", "user_id", "content", "created_at"]
+
+
+class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = ["id", "idea_id", "name"]

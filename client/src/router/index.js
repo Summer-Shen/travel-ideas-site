@@ -36,7 +36,7 @@ const router = createRouter({
       component: CreateIdeasView
     },
     {
-      path: '/modify/:id',
+      path: '/:id',
       name: 'modify',
       component: ModifyIdeasView
     }

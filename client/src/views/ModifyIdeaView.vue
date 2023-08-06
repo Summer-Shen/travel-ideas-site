@@ -64,11 +64,6 @@ import pinia from '@/stores/index'
 import { useUserStore } from '@/stores/user'
 import dayjs from 'dayjs'
 
-// const props = defineProps(['idea_id'])
-
-// // eslint-disable-next-line vue/no-setup-props-destructure
-// const idea_id = ref(props.idea_id)
-
 const { proxy } = getCurrentInstance()
 
 const userStore = useUserStore(pinia)
@@ -114,7 +109,42 @@ const FORM_RULES = {
   tags: [{ required: true, message: 'Tags are required' }]
 }
 
-console.log(proxy.$router.currentRoute.value)
+proxy
+  .$http({
+    method: 'get',
+    url: 'api/ideas/get?q=' + proxy.$router.currentRoute.value.params.id
+  })
+  .then(function (response) {
+    console.log(response)
+    formData.title = response.data.title
+    formData.destination = response.data.destination
+    formData.start_date = response.data.start_date
+    formData.end_date = response.data.end_date
+  })
+  .catch(function (error) {
+    console.log(error)
+    MessagePlugin.warning(error.response.data)
+  })
+  .finally(function () {
+    // always executed
+  })
+
+proxy
+  .$http({
+    method: 'get',
+    url: 'api/tags/get_by_idea?q=' + proxy.$router.currentRoute.value.params.id
+  })
+  .then(function (response) {
+    console.log(response)
+    formData.tags = response.data.map((tag) => tag.name)
+  })
+  .catch(function (error) {
+    console.log(error)
+    MessagePlugin.warning(error.response.data)
+  })
+  .finally(function () {
+    // always executed
+  })
 
 const formData = reactive({
   user_id: userStore.id,
