@@ -58,11 +58,12 @@
 import { ref, reactive } from 'vue'
 import { MessagePlugin } from 'tdesign-vue-next'
 import { getCurrentInstance } from 'vue'
+import pinia from '@/stores/index'
 import { useUserStore } from '@/stores/user'
 
 const { proxy } = getCurrentInstance()
 
-const userStore = useUserStore()
+const userStore = useUserStore(pinia)
 
 const FORM_RULES = {
   name: [{ required: true, message: 'Name is required' }],
@@ -97,6 +98,9 @@ const onSubmit = ({ validateResult, firstError }) => {
         console.log(response)
         userStore.setUser(response.data)
         MessagePlugin.success('User account ' + userStore.name + ' created.')
+        proxy.$router.push({
+          path: '/login'
+        })
       })
       .catch(function (error) {
         console.log(error)

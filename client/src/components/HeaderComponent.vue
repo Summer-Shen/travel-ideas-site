@@ -27,12 +27,13 @@
 import { ref } from 'vue'
 import { MessagePlugin } from 'tdesign-vue-next'
 import { getCurrentInstance } from 'vue'
+import pinia from '@/stores/index'
 import { useUserStore } from '@/stores/user'
 
 const { proxy } = getCurrentInstance()
 
 // const isLoggedIn = ref(false)
-const userStore = useUserStore()
+const userStore = useUserStore(pinia)
 
 const menuValue = ref('item1')
 

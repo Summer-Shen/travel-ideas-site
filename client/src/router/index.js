@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import pinia from '@/stores/index'
+import { useUserStore } from '@/stores/user'
 import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import SearchIdeasView from '../views/SearchIdeasView.vue'
@@ -11,14 +13,6 @@ const router = createRouter({
       name: 'home',
       component: SearchIdeasView
     },
-    // {
-    //   path: '/about',
-    //   name: 'about',
-    //   // route level code-splitting
-    //   // this generates a separate chunk (About.[hash].js) for this route
-    //   // which is lazy-loaded when the route is visited.
-    //   component: () => import('../views/AboutView.vue')
-    // },
     {
       path: '/login',
       name: 'login',
@@ -35,6 +29,22 @@ const router = createRouter({
       component: SearchIdeasView
     }
   ]
+})
+
+const userStore = useUserStore(pinia)
+
+// eslint-disable-next-line no-unused-vars
+router.beforeEach(async (to, from) => {
+  if (
+    // make sure the user is authenticated
+    userStore.id === 0 &&
+    // avoid an infinite redirect
+    to.name !== 'login' &&
+    to.name !== 'register'
+  ) {
+    // redirect the user to the login page
+    return { name: 'login' }
+  }
 })
 
 export default router

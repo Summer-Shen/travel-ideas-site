@@ -47,11 +47,12 @@
 import { ref, reactive } from 'vue'
 import { MessagePlugin } from 'tdesign-vue-next'
 import { getCurrentInstance } from 'vue'
+import pinia from '@/stores/index'
 import { useUserStore } from '@/stores/user'
 
 const { proxy } = getCurrentInstance()
 
-const userStore = useUserStore()
+const userStore = useUserStore(pinia)
 
 const FORM_RULES = {
   email: [
@@ -84,6 +85,9 @@ const onSubmit = ({ validateResult, firstError }) => {
         console.log(response)
         userStore.setUser(response.data)
         MessagePlugin.success('Welcome, ' + userStore.name)
+        proxy.$router.push({
+          path: '/search'
+        })
       })
       .catch(function (error) {
         console.log(error)
