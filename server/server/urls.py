@@ -31,6 +31,7 @@ urlpatterns = [
     path("api/ideas/modify", views.modify_idea),
     path("api/ideas/search_by_dest", views.search_ideas_by_destination),
     path("api/ideas/search_by_tag", views.search_ideas_by_tag),
+    path("api/ideas/get", views.get_idea_by_id),
     path("api/comments/create", views.create_comment),
     path("api/comments/get_by_idea", views.get_comments_by_idea),
 ]

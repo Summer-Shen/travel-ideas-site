@@ -155,6 +155,20 @@ def modify_idea(request):
 
 
 @api_view(["GET"])
+def get_idea_by_id(request):
+    query = request.GET.get("q", "")
+    try:
+        idea = Idea.objects.get(id__exact=query)
+    except Idea.DoesNotExist:
+        return Response(
+            "Please input valid idea id.",
+            status=status.HTTP_400_BAD_REQUEST
+        )
+    serializer = IdeaSerializer(idea, many=False)
+    return Response(serializer.data)
+
+
+@api_view(["GET"])
 def search_ideas_by_destination(request):
     query = request.GET.get("q", "")
     matched_ideas = Idea.objects.filter(destination__icontains=query)
