@@ -1,8 +1,10 @@
 <template>
   <div>
-    <t-space direction="vertical" size="small">
-      <div>Weather: {{ weatherText }}, {{ metricTemperatureText }}</div>
-    </t-space>
+    <t-loading size="small" :loading="loading" show-overlay>
+      <t-space direction="vertical" size="small">
+        <div>Weather: {{ weatherText }}, {{ metricTemperatureText }}</div>
+      </t-space>
+    </t-loading>
   </div>
 </template>
 
@@ -18,6 +20,8 @@ const props = defineProps(['id', 'destination'])
 const ideaId = props.id
 // eslint-disable-next-line vue/no-setup-props-destructure
 const ideaDestination = props.destination
+
+const loading = ref(true)
 
 const weatherText = ref('')
 const metricTemperatureText = ref('')
@@ -45,6 +49,7 @@ proxy
         weatherText.value = response.data[0].WeatherText
         const metricTemperature = response.data[0].Temperature.Metric
         metricTemperatureText.value = metricTemperature.Value + '℃'
+        loading.value = false
       })
       .catch(function (error) {
         console.log(error)
