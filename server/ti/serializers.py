@@ -20,7 +20,7 @@ class IdeaSearchItemSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Idea
-        fields = ["id", "title", "destination", "start_date", "end_date", "comments_count"]
+        fields = ["id", "title", "destination", "start_date", "end_date", "comments_count", "user_id"]
 
 
 class CommentSerializer(serializers.ModelSerializer):

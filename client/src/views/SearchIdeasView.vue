@@ -40,11 +40,20 @@
             <div>Destination: {{ result.destination }}</div>
             <div>Date: {{ result.start_date }} to {{ result.end_date }}</div>
             <template #footer>
-              <t-row :align="'middle'" justify="center">
+              <t-row :align="'middle'" justify="center" style="gap: 24px">
                 <t-col flex="auto" style="display: inline-flex; justify-content: right">
-                  <t-badge :count="result.comments_count" show-zero>
-                    <t-button variant="text" shape="square"> <chat-icon /> </t-button
-                  ></t-badge>
+                  <t-space size="small">
+                    <div v-if="result.user_id === userStore.id">
+                      <t-button variant="text" shape="square"> <delete-icon /> </t-button>
+                    </div>
+                    <div v-if="result.user_id === userStore.id">
+                      <t-button variant="text" shape="square"> <edit-icon /> </t-button>
+                    </div>
+                    <t-button variant="text" shape="square"> <bulletpoint-icon /> </t-button>
+                    <t-badge :count="result.comments_count" show-zero>
+                      <t-button variant="text" shape="square"> <chat-icon /> </t-button>
+                    </t-badge>
+                  </t-space>
                 </t-col>
               </t-row>
             </template>
@@ -60,13 +69,13 @@
 import { ref, reactive } from 'vue'
 import { MessagePlugin } from 'tdesign-vue-next'
 import { getCurrentInstance } from 'vue'
-// import { useUserStore } from '@/stores/user'
+import { useUserStore } from '@/stores/user'
 
-import { ChatIcon } from 'tdesign-icons-vue-next'
+import { BulletpointIcon, DeleteIcon, EditIcon, ChatIcon } from 'tdesign-icons-vue-next'
 
 const { proxy } = getCurrentInstance()
 
-// const userStore = useUserStore()
+const userStore = useUserStore()
 
 const results = ref([])
 
@@ -127,7 +136,6 @@ const onEnter = (_, { e }) => {
 .cards {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
   row-gap: 4px;
 }
 
