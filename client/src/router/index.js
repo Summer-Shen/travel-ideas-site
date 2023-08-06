@@ -5,6 +5,7 @@ import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import SearchIdeasView from '../views/SearchIdeasView.vue'
 import CreateIdeasView from '../views/CreateIdeaView.vue'
+import ModifyIdeasView from '../views/ModifyIdeaView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,6 +34,11 @@ const router = createRouter({
       path: '/create',
       name: 'create',
       component: CreateIdeasView
+    },
+    {
+      path: '/modify/:id',
+      name: 'modify',
+      component: ModifyIdeasView
     }
   ]
 })
