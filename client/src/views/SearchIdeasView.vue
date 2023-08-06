@@ -18,8 +18,8 @@
       >
         <t-form-item name="searchBy">
           <t-radio-group v-model="formData.searchBy">
-            <t-radio value="destination">By destination</t-radio>
-            <t-radio value="tag">By tags</t-radio>
+            <t-radio value="destination">By Destination</t-radio>
+            <t-radio value="tag">By Tags</t-radio>
           </t-radio-group>
         </t-form-item>
 
@@ -36,7 +36,7 @@
 
       <div class="cards">
         <div v-for="result in results" :key="result.id" class="card">
-          <t-card :title="result.title">
+          <t-card :title="result.title" size="small" hoverShadow="true">
             <div>Destination: {{ result.destination }}</div>
             <div>Date: {{ result.start_date }} to {{ result.end_date }}</div>
             <template #footer>
@@ -50,7 +50,13 @@
                       <t-button variant="text" shape="square"> <edit-icon /> </t-button>
                     </div>
                     <t-button variant="text" shape="square"> <bulletpoint-icon /> </t-button>
-                    <t-badge :count="result.comments_count" show-zero>
+                    <t-badge
+                      :count="result.comments_count"
+                      show-zero
+                      size="small"
+                      :offset="[4, 4]"
+                      :color="result.comments_count ? '#0052D9' : '#a6a6a6'"
+                    >
                       <t-button variant="text" shape="square"> <chat-icon /> </t-button>
                     </t-badge>
                   </t-space>
@@ -69,13 +75,14 @@
 import { ref, reactive } from 'vue'
 import { MessagePlugin } from 'tdesign-vue-next'
 import { getCurrentInstance } from 'vue'
+import pinia from '@/stores/index'
 import { useUserStore } from '@/stores/user'
 
 import { BulletpointIcon, DeleteIcon, EditIcon, ChatIcon } from 'tdesign-icons-vue-next'
 
 const { proxy } = getCurrentInstance()
 
-const userStore = useUserStore()
+const userStore = useUserStore(pinia)
 
 const results = ref([])
 

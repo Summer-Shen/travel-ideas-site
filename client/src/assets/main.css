@@ -36,3 +36,7 @@ a,
 	align-items: stretch;
 }
 
+.t-card {
+	padding: 0.4rem 0 0 0 !important
+}
+
