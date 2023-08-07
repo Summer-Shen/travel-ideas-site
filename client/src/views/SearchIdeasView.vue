@@ -67,7 +67,13 @@
                       :offset="[4, 4]"
                       :color="result.comments_count ? '#0052D9' : '#a6a6a6'"
                     >
-                      <t-button variant="text" shape="square"> <chat-icon /> </t-button>
+                      <t-button
+                        variant="text"
+                        shape="square"
+                        @click="showComments(result.id, result.title)"
+                      >
+                        <chat-icon />
+                      </t-button>
                     </t-badge>
                   </t-space>
                 </t-col>
@@ -100,6 +106,26 @@
         <details-component :id="currIdeaId" :destination="currIdeaDestination"></details-component>
       </template>
     </t-dialog>
+
+    <t-dialog
+      v-model:visible="isCommentsVisible"
+      attach="body"
+      :header="'Comments: ' + currIdeaTitle"
+      destroy-on-close
+      :on-confirm="
+        () => {
+          isCommentsVisible = false
+          currIdeaId = 0
+          currIdeaTitle = ''
+        }
+      "
+      :confirmBtn="null"
+      :cancelBtn="null"
+    >
+      <template #body>
+        <comments-component :id="currIdeaId"></comments-component>
+      </template>
+    </t-dialog>
   </t-config-provider>
 </template>
 <script setup>
@@ -111,6 +137,7 @@ import { useUserStore } from '@/stores/user'
 
 import { BulletpointIcon, DeleteIcon, EditIcon, ChatIcon } from 'tdesign-icons-vue-next'
 import DetailsComponent from '../components/DetailsComponent.vue'
+import CommentsComponent from '../components/CommentsComponent.vue'
 
 const globalConfig = {
   dialog: {
@@ -137,7 +164,9 @@ const userStore = useUserStore(pinia)
 
 const results = ref([])
 const isDetailsVisible = ref(false)
+const isCommentsVisible = ref(false)
 const currIdeaId = ref(0)
+const currIdeaTitle = ref('')
 const currIdeaDestination = ref('')
 
 proxy
@@ -231,6 +260,12 @@ const showDetails = (idea_id, idea_destination) => {
   isDetailsVisible.value = true
 }
 
+const showComments = (idea_id, idea_title) => {
+  currIdeaId.value = idea_id
+  currIdeaTitle.value = idea_title
+  isCommentsVisible.value = true
+}
+
 // disables Input component & triggers submit event when Enter key is pressed.
 const onEnter = (_, { e }) => {
   e.preventDefault()
@@ -247,5 +282,13 @@ const onEnter = (_, { e }) => {
 .card {
   margin: 6px;
   width: calc(33.33% - 12px);
+}
+
+:global(.t-dialog__body) {
+  padding-bottom: 0 !important;
+}
+
+:global(.t-dialog__footer) {
+  display: none !important;
 }
 </style>
