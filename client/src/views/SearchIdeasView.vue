@@ -81,23 +81,26 @@
     </t-space>
   </div>
 
-  <t-dialog
-    v-model:visible="isDetailsVisible"
-    attach="body"
-    :header="'Details: ' + currIdeaDestination"
-    destroy-on-close
-    :on-confirm="
-      () => {
-        isDetailsVisible = false
-        currIdeaId = 0
-        currIdeaDestination = ''
-      }
-    "
-  >
-    <template #body>
-      <details-component :id="currIdeaId" :destination="currIdeaDestination"></details-component>
-    </template>
-  </t-dialog>
+  <t-config-provider :global-config="globalConfig">
+    <t-dialog
+      v-model:visible="isDetailsVisible"
+      attach="body"
+      :header="'Details: ' + currIdeaDestination"
+      destroy-on-close
+      :on-confirm="
+        () => {
+          isDetailsVisible = false
+          currIdeaId = 0
+          currIdeaDestination = ''
+        }
+      "
+      :cancelBtn="null"
+    >
+      <template #body>
+        <details-component :id="currIdeaId" :destination="currIdeaDestination"></details-component>
+      </template>
+    </t-dialog>
+  </t-config-provider>
 </template>
 <script setup>
 import { ref, reactive } from 'vue'
@@ -108,6 +111,25 @@ import { useUserStore } from '@/stores/user'
 
 import { BulletpointIcon, DeleteIcon, EditIcon, ChatIcon } from 'tdesign-icons-vue-next'
 import DetailsComponent from '../components/DetailsComponent.vue'
+
+const globalConfig = {
+  dialog: {
+    confirm: 'Confirm',
+    // cancel: 'cancel',
+    cancel: {
+      theme: 'default',
+      variant: 'outline',
+      content: 'Cancel'
+    },
+    confirmBtnTheme: {
+      default: 'primary',
+      info: 'primary',
+      warning: 'warning',
+      danger: 'danger',
+      success: 'success'
+    }
+  }
+}
 
 const { proxy } = getCurrentInstance()
 
