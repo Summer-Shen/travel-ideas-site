@@ -34,11 +34,16 @@
         </t-form-item>
       </t-form>
 
+      <div>{{ results.length }} matched records</div>
+
       <div class="cards">
         <div v-for="result in results" :key="result.id" class="card">
           <t-card :title="result.title" size="small" hoverShadow>
             <div>Destination: {{ result.destination }}</div>
-            <div>Date: {{ result.start_date }} to {{ result.end_date }}</div>
+            <div>
+              Date: {{ dayjs(result.start_date).format('MM/YYYY') }} to
+              {{ dayjs(result.end_date).format('MM/YYYY') }}
+            </div>
             <template #footer>
               <t-row :align="'middle'" justify="center" style="gap: 24px">
                 <t-col flex="auto" style="display: inline-flex; justify-content: right">
@@ -138,6 +143,7 @@ import { useUserStore } from '@/stores/user'
 import { BulletpointIcon, DeleteIcon, EditIcon, ChatIcon } from 'tdesign-icons-vue-next'
 import DetailsComponent from '../components/DetailsComponent.vue'
 import CommentsComponent from '../components/CommentsComponent.vue'
+import dayjs from 'dayjs'
 
 const globalConfig = {
   dialog: {

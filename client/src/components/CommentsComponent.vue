@@ -17,7 +17,11 @@
       </t-loading>
 
       <div class="form-container">
-        <t-textarea v-model="appendedComment" placeholder="Write your comment..." />
+        <t-textarea
+          v-model="appendedComment"
+          placeholder="Write your comment..."
+          :maxlength="255"
+        />
         <t-button class="form-submit" @click="submitReply">Submit</t-button>
       </div>
     </t-space>
