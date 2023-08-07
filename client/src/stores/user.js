@@ -3,8 +3,6 @@ import { defineStore } from 'pinia'
 import Cookies from 'js-cookie'
 
 export const useUserStore = defineStore('user', () => {
-  console.log(localStorage.getItem('user_id'))
-
   const id = ref(Number(Cookies.get('user_id')) || 0)
   const name = ref(Cookies.get('user_name') || '')
   const email = ref(Cookies.get('user_email') || '')
