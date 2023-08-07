@@ -24,9 +24,11 @@ class IdeaSearchItemSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
+    user_name = serializers.CharField(source="user_id.name", read_only=True)
+    
     class Meta:
         model = Comment
-        fields = ["id", "idea_id", "user_id", "content", "created_at"]
+        fields = ["id", "idea_id", "user_id", "content", "created_at", "user_name"]
 
 
 class TagSerializer(serializers.ModelSerializer):

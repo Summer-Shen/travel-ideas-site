@@ -229,6 +229,6 @@ def create_comment(request):
 @api_view(["GET"])
 def get_comments_by_idea(request):
     query = request.GET.get("q", "")
-    matched_comments = Comment.objects.filter(idea_id=query)
+    matched_comments = Comment.objects.filter(idea_id=query).order_by('-created_at')
     serializer = CommentSerializer(matched_comments, many=True)
     return Response(serializer.data)
